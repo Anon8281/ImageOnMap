@@ -37,6 +37,8 @@
 package fr.moribus.imageonmap;
 
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import fr.moribus.imageonmap.commands.Commands;
 import fr.moribus.imageonmap.commands.maptool.DeleteCommand;
 import fr.moribus.imageonmap.commands.maptool.ExploreCommand;
@@ -64,13 +66,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class ImageOnMap extends JavaPlugin {
 
     private static ImageOnMap PLUGIN;
+    private static TaskScheduler scheduler;
 
     private final Path mapsDirectory;
     private final Path imagesDirectory;
 
     public ImageOnMap() {
         PLUGIN = this;
-
+        scheduler = UniversalScheduler.getScheduler(PLUGIN);
         var folder = getDataFolder().toPath();
         mapsDirectory = folder.resolve("maps");
         imagesDirectory = folder.resolve("images");
@@ -78,6 +81,10 @@ public final class ImageOnMap extends JavaPlugin {
 
     public static ImageOnMap getPlugin() {
         return PLUGIN;
+    }
+
+    public static TaskScheduler getScheduler() {
+        return scheduler;
     }
 
     public Path getImagesDirectory() {

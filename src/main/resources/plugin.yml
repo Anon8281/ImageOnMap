@@ -2,7 +2,7 @@ name: ImageOnMap
 main: fr.moribus.imageonmap.ImageOnMap
 version: "${project.version}"
 api-version: "1.13"
-
+folia-supported: true
 
 commands:
   tomap:

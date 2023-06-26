@@ -36,6 +36,7 @@
 
 package fr.moribus.imageonmap.ui;
 
+import fr.moribus.imageonmap.ImageOnMap;
 import fr.moribus.imageonmap.gui.GuiUtils;
 import fr.moribus.imageonmap.i18n.I;
 import fr.moribus.imageonmap.image.MapInitEvent;
@@ -45,6 +46,7 @@ import fr.moribus.imageonmap.map.PosterMap;
 import fr.zcraft.quartzlib.tools.runners.RunTask;
 import fr.zcraft.quartzlib.tools.world.FlatLocation;
 import fr.zcraft.quartzlib.tools.world.WorldUtils;
+import io.papermc.lib.PaperLib;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -63,6 +65,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.awt.print.Paper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -301,7 +304,7 @@ public abstract class SplatterMapManager {
 
                 int id = poster.getMapIdAtReverseY(i);
 
-                RunTask.later(() -> {
+                ImageOnMap.getScheduler().runTaskLater(frame.getLocation(), () -> {
                     ItemStack item = new ItemStack(Material.FILLED_MAP);
                     MapMeta meta = (MapMeta) item.getItemMeta();
                     meta.setMapId(id);

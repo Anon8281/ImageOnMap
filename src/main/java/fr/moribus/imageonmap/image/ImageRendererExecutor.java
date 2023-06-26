@@ -68,10 +68,6 @@ public class ImageRendererExecutor {
                     .build()
     );
 
-    public static Executor getMainThread() {
-        return Bukkit.getScheduler().getMainThreadExecutor(ImageOnMap.getPlugin());
-    }
-
     @FunctionalInterface
     interface ExceptionalSupplier<T> {
         T supply() throws Throwable;
@@ -190,17 +186,17 @@ public class ImageRendererExecutor {
             ImageIOExecutor.saveImage(ImageMap.getFullImageFile(mapsIDs[0], mapsIDs[mapsIDs.length - 1]), poster.getImage());
         }
 
-        getMainThread().execute(() -> Renderer.installRenderer(poster, mapsIDs));
+        ImageOnMap.getScheduler().runTask(() -> Renderer.installRenderer(poster, mapsIDs));
     }
 
     private static ImageMap renderSingle(final BufferedImage image, final UUID playerUUID) throws Throwable {
         MapManager.checkMapLimit(1, playerUUID);
 
-        int mapID = CompletableFuture.supplyAsync(() -> MapManager.getNewMapsIds(1)[0], getMainThread()).join();
+        int mapID = CompletableFuture.supplyAsync(() -> MapManager.getNewMapsIds(1)[0]).join();
 
         ImageIOExecutor.saveImage(mapID, image);
 
-        getMainThread().execute(() -> Renderer.installRenderer(image, mapID));
+        ImageOnMap.getScheduler().runTask(() -> Renderer.installRenderer(image, mapID));
 
         return MapManager.createMap(playerUUID, mapID);
     }
@@ -211,7 +207,7 @@ public class ImageRendererExecutor {
         int mapCount = poster.getImagesCount();
         MapManager.checkMapLimit(mapCount, playerUUID);
 
-        int[] mapsIDs = CompletableFuture.supplyAsync(() -> MapManager.getNewMapsIds(mapCount), getMainThread()).join();
+        int[] mapsIDs = CompletableFuture.supplyAsync(() -> MapManager.getNewMapsIds(mapCount)).join();
 
         updateMap(poster, mapsIDs);
 

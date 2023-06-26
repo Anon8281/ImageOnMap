@@ -30,6 +30,7 @@
 
 package fr.zcraft.quartzlib.tools.text;
 
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import fr.moribus.imageonmap.ImageOnMap;
 import net.kyori.adventure.text.Component;
 
@@ -48,7 +49,7 @@ public final class ActionBar {
     private static final Map<UUID, String> actionMessages = new ConcurrentHashMap<>();
 
     private static Runnable actionMessagesUpdater = null;
-    private static BukkitTask actionMessagesUpdaterTask = null;
+    private static MyScheduledTask actionMessagesUpdaterTask = null;
 
 
     private ActionBar() {
@@ -130,7 +131,7 @@ public final class ActionBar {
             actionMessagesUpdaterTask = null;
         } else if (messagesCount > 0 && actionMessagesUpdaterTask == null) {
             actionMessagesUpdaterTask =
-                    Bukkit.getScheduler().runTaskTimer(ImageOnMap.getPlugin(), actionMessagesUpdater, 20, 30);
+                    ImageOnMap.getScheduler().runTaskTimer(actionMessagesUpdater, 20, 30);
         }
     }
 }
