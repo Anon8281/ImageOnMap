@@ -241,7 +241,7 @@ public abstract class SplatterMapManager {
                 }
                 //Rotation management relative to player rotation the default position is North,
                 // when on ceiling we flipped the rotation
-                RunTask.later(() -> {
+                ImageOnMap.getScheduler().runTaskLater(frame.getLocation(), () -> {
                     ItemStack item = new ItemStack(Material.FILLED_MAP);
                     MapMeta meta = (MapMeta) item.getItemMeta();
                     meta.setMapId(id);
