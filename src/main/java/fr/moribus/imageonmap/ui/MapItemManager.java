@@ -274,14 +274,16 @@ public class MapItemManager implements Listener {
 
                 meta.setDisplayName(null);
                 frameItem.setItemMeta(meta);
-                RunTask.later(() -> {
+                ImageOnMap.getScheduler().runTaskLater(frame, () -> {
                     frame.setItem(frameItem);
                     frame.setRotation(Rotation.NONE);
                 }, 5L);
             } else {
                 final ItemStack frameItem = mapItem.clone();
-                frame.setRotation(Rotation.NONE);
-                RunTask.later(() -> frame.setItem(frameItem), 5L);
+                ImageOnMap.getScheduler().runTaskLater(frame, () -> {
+                    frame.setRotation(Rotation.NONE);
+                    frame.setItem(frameItem);
+                }, 5L);
             }
         }
 
@@ -315,8 +317,8 @@ public class MapItemManager implements Listener {
                 return;
             }
         }
-
-        frame.setItem(createMapItem(item));
+        ImageOnMap.getScheduler().runTask(frame, () ->
+                frame.setItem(createMapItem(item)));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
